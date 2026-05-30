@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para la persona más especial</title>
+    <style>
+        :root {
+            --color-bg: #fff0f3;
+            --color-envelope: #ffccd5;
+            --color-envelope-inside: #ffb3c1;
+            --color-letter: #ffffff;
+            --color-text: #4a5568;
+            --color-accent: #ff4d6d;
+            --color-yes: #4caf50;
+            --color-no: #f44336;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+        }
+
+        /* --- Lluvia de Flores en Movimiento --- */
+        .flower-fall {
+            position: absolute;
+            top: -50px;
+            font-size: 24px;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- Contenedor del Sobre --- */
+        .envelope-container {
+            position: relative;
+            width: 450px;
+            height: 300px;
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        .envelope {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-envelope);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 160px 225px 0 225px;
+            border-color: var(--color-envelope-inside) transparent transparent transparent;
+            transform-origin: top;
+            transition: transform 0.6s ease, z-index 0.6s ease;
+            z-index: 6;
+        }
+
+        .pocket {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 150px 0 150px 225px;
+            border-color: transparent transparent transparent rgba(255, 179, 193, 0.9);
+            z-index: 4;
+        }
+
+        .pocket-right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 150px 225px 150px 0;
+            border-color: transparent rgba(255, 179, 193, 0.95) transparent transparent;
+            z-index: 4;
+            border-bottom-right-radius: 12px;
+        }
+
+        .pocket-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 225px 150px 225px;
+            border-color: transparent transparent rgba(255, 154, 172, 0.9) transparent;
+            z-index: 5;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        .heart-seal {
+            position: absolute;
+            top: 140px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            color: var(--color-accent);
+            z-index: 7;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));
+        }
+
+        /* --- La Carta Interior --- */
+        .letter {
+            position: absolute;
+            bottom: 5px;
+            left: 20px;
+            width: 410px;
+            height: 250px;
+            background-color: var(--color-letter);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.6s ease, height 0.6s ease;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px dashed var(--color-envelope-inside);
+        }
+
+        .letter-content { text-align: center; }
+        .letter-content h1 { font-size: 18px; color: var(--color-accent); margin-bottom: 8px; font-family: 'Georgia', serif; font-style: italic; }
+        .letter-content p { font-size: 13.5px; line-height: 1.5; color: var(--color-text); }
+        .question { text-align: center; font-size: 16px; font-weight: bold; color: var(--color-accent); margin-top: 5px; position: relative; }
+        .signature { font-size: 11px; color: #718096; font-weight: normal; margin-top: 5px; font-family: monospace; }
+
+        /* --- Contenedor de Botones (Estables al inicio) --- */
+        .options-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 10px;
+            height: 40px; /* Espacio reservado para que no se mueva la firma */
+        }
+
+        .btn {
+            padding: 8px 25px;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .btn-yes { 
+            background-color: var(--color-yes); 
+            color: white; 
+            transition: transform 0.2s ease;
+        }
+        .btn-yes:hover { transform: scale(1.1); }
+        
+        .btn-no {
+            background-color: var(--color-no);
+            color: white;
+            transition: transform 0.1s ease;
+            z-index: 1000;
+        }
+
+        /* --- Clases de Estado Abierto --- */
+        .envelope-container.open .flap { transform: rotateX(180deg); z-index: 1; }
+        .envelope-container.open .heart-seal { opacity: 0; transform: translateX(-50%) scale(0); pointer-events: none; }
+        .envelope-container.open .letter {
+            transform: translateY(-185px);
+            z-index: 8;
+            height: 340px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* --- PANTALLA DE VICTORIA --- */
+        .success-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--color-bg);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+
+        .success-screen.show { opacity: 1; pointer-events: auto; }
+        .success-content h2 { font-size: 32px; color: var(--color-accent); font-family: 'Georgia', serif; margin-bottom: 15px; }
+        .success-content p { font-size: 20px; color: var(--color-text); }
+        .floating-hearts { font-size: 50px; animation: pulse 1s infinite alternate; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
+        }
+
+        /* --- Adaptabilidad Móvil --- */
+        @media (max-width: 500px) {
+            .envelope-container { width: 320px; height: 220px; }
+            .flap { border-width: 115px 160px 0 160px; }
+            .pocket { border-width: 110px 0 110px 160px; }
+            .pocket-right { border-width: 110px 160px 110px 0; }
+            .pocket-bottom { border-width: 0 160px 110px 160px; }
+            .heart-seal { top: 95px; font-size: 32px; }
+            .letter { width: 290px; height: 180px; left: 15px; padding: 12px; bottom: 5px;}
+            .letter-content h1 { font-size: 14px; margin-bottom: 2px; }
+            .letter-content p { font-size: 11px; line-height: 1.3; }
+            .question { font-size: 13px; }
+            .btn { padding: 6px 18px; font-size: 12px; }
+            .options-container { margin-top: 5px; gap: 10px; }
+            .envelope-container.open .letter { transform: translateY(-145px); height: 260px; }
+            .success-content h2 { font-size: 24px; }
+            .success-content p { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="flower-fall" style="left: 5%; animation-duration: 6s;">🌸</div>
+    <div class="flower-fall" style="left: 15%; animation-duration: 8s;">🌷</div>
+    <div class="flower-fall" style="left: 25%; animation-duration: 7s;">🌹</div>
+    <div class="flower-fall" style="left: 45%; animation-duration: 6s;">🌹</div>
+    <div class="flower-fall" style="left: 65%; animation-duration: 7s;">🌷</div>
+    <div class="flower-fall" style="left: 85%; animation-duration: 6s;">🌸</div>
+    <div class="flower-fall" style="left: 95%; animation-duration: 8s;">🌷</div>
+
+    <div class="envelope-container" id="cartaSobre">
+        <div class="envelope">
+            <div class="flap"></div>
+            <div class="pocket"></div>
+            <div class="pocket-right"></div>
+            <div class="pocket-bottom"></div>
+            <div class="heart-seal">❤️</div>
+            
+            <div class="letter">
+                <div class="letter-content">
+                    <h1>Para mi personita favorita...</h1>
+                    <p>
+                        Desde que llegaste a mi vida todo es más bonito. 
+                        <strong>Aunque estemos lejos y todavía no nos hayamos visto en persona</strong>, 
+                        quiero que sepas que me gustas mucho y te quiero muchísimo. Rompes cualquier distancia.
+                    </p>
+                </div>
+                
+                <div class="question">
+                    ¿Quieres ser mi novia? 🌹
+                    <div class="options-container">
+                        <button class="btn btn-yes" id="btnSi">Sip</button>
+                        <button class="btn btn-no" id="btnNo">Nop</button>
+                    </div>
+                    <div class="signature">ATT: Tu ingeniero en sistemas</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="success-screen" id="pantallaExito">
+        <div class="success-content">
+            <div class="floating-hearts">❤️✨💖</div>
+            <h2>¡SABÍA QUE DIRÍAS QUE SÍ! 🥰</h2>
+            <p>Me haces el ingeniero más feliz del mundo mundial. 🌍🚀</p>
+        </div>
+    </div>
+
+    <script>
+        const sobre = document.getElementById('cartaSobre');
+        const btnSi = document.getElementById('btnSi');
+        const btnNo = document.getElementById('btnNo');
+        const pantallaExito = document.getElementById('pantallaExito');
+
+        // Abre y cierra el sobre al hacer clic
+        sobre.addEventListener('click', (e) => {
+            if (sobre.classList.contains('open') && e.target.closest('.letter')) {
+                return; 
+            }
+            sobre.classList.toggle('open');
+        });
+
+        // Algoritmo de evasión: cambia a posición absoluta solo cuando intentan interactuar
+        const moverBotonNo = () => {
+            // Asegura que cambie el tipo de posicionamiento para que pueda volar libre por la pantalla
+            if (btnNo.style.position !== 'fixed') {
+                btnNo.style.position = 'fixed';
+            }
+            
+            // Calcula coordenadas aleatorias seguras dentro del viewport
+            const x = Math.random() * (window.innerWidth - btnNo.offsetWidth - 30) + 15;
+            const y = Math.random() * (window.innerHeight - btnNo.offsetHeight - 30) + 15;
+            
+            btnNo.style.left = `${x}px`;
+            btnNo.style.top = `${y}px`;
+        };
+
+        // Eventos para PC y Móviles
+        btnNo.addEventListener('mouseenter', moverBotonNo);
+        btnNo.addEventListener('click', moverBotonNo);
+        btnNo.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Detiene el click por defecto del móvil e inicia el escape
+            moverBotonNo();
+        });
+
+        // Acción definitiva al presionar "Sip"
+        btnSi.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            pantallaExito.classList.add('show');
+        });
+    </script>
+</body>
+</html>
