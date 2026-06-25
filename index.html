@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Para la persona más especial</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("m-L15nQT3QYK0xPPx");
+        })();
+    </script>
     <style>
         :root {
             --color-bg: #fff0f3;
@@ -51,11 +57,11 @@
             100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
 
-        /* --- Contenedor del Sobre (Más ancho que largo) --- */
+        /* --- Contenedor del Sobre --- */
         .envelope-container {
             position: relative;
-            width: 550px; /* Más ancho */
-            height: 330px; /* Proporción limpia */
+            width: 550px; 
+            height: 330px; 
             z-index: 10;
             cursor: pointer;
         }
@@ -77,7 +83,7 @@
             width: 0;
             height: 0;
             border-style: solid;
-            border-width: 175px 275px 0 275px; /* Ajustado al nuevo ancho */
+            border-width: 175px 275px 0 275px; 
             border-color: var(--color-envelope-inside) transparent transparent transparent;
             transform-origin: top;
             transition: transform 0.6s ease, z-index 0.6s ease;
@@ -135,26 +141,25 @@
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));
         }
 
-        /* --- La Carta Interior (Más ancha que larga y Centrada) --- */
+        /* --- La Carta Interior (Ajustada en altura, posición y anchura) --- */
         .letter {
             position: absolute;
-            bottom: 10px;
-            left: 20px;
-            width: 510px; /* Más ancha que larga */
-            height: 260px;
+            bottom: 15px;
+            left: 15px;
+            width: 520px; 
+            height: 290px; /* Más espaciosa para evitar desbordes */
             background-color: var(--color-letter);
             border-radius: 8px;
-            padding: 25px;
+            padding: 20px 25px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.6s ease, height 0.6s ease;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.6s ease;
             z-index: 2;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Centrado vertical */
-            align-items: center; /* Centrado horizontal */
+            justify-content: space-between; 
+            align-items: center; 
             text-align: center;
             border: 1px dashed var(--color-envelope-inside);
-            gap: 15px; /* Espaciado uniforme interno */
         }
 
         .letter-content { 
@@ -162,28 +167,28 @@
         }
         
         .letter-content h1 { 
-            font-size: 19px; 
+            font-size: 17px; 
             color: var(--color-accent); 
-            margin-bottom: 10px; 
+            margin-bottom: 8px; 
             font-family: 'Georgia', serif; 
             font-style: italic; 
         }
 
         .letter-content p { 
-            font-size: 14px; 
-            line-height: 1.5; 
+            font-size: 13.5px; 
+            line-height: 1.45; 
             color: var(--color-text); 
         }
 
         .question { 
             width: 100%;
-            font-size: 17px; 
+            font-size: 16px; 
             font-weight: bold; 
             color: var(--color-accent); 
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .signature { 
@@ -191,7 +196,6 @@
             color: #718096; 
             font-weight: normal; 
             font-family: monospace; 
-            margin-top: 5px;
         }
 
         /* --- Contenedor de Botones Centrados --- */
@@ -200,13 +204,13 @@
             justify-content: center;
             align-items: center;
             gap: 25px;
-            height: 40px; 
+            height: 35px; 
             width: 100%;
         }
 
         .btn {
-            padding: 8px 30px;
-            font-size: 14px;
+            padding: 6px 30px;
+            font-size: 13px;
             font-weight: bold;
             border: none;
             border-radius: 20px;
@@ -228,13 +232,14 @@
             z-index: 1000;
         }
 
-        /* --- Clases de Estado Abierto --- */
+        /* --- Estados de apertura controlados --- */
         .envelope-container.open .flap { transform: rotateX(180deg); z-index: 1; }
         .envelope-container.open .heart-seal { opacity: 0; transform: translateX(-50%) scale(0); pointer-events: none; }
+        
+        /* Modificado el translateY para que baje y no quede muy arriba */
         .envelope-container.open .letter {
-            transform: translateY(-200px);
+            transform: translateY(-110px);
             z-index: 8;
-            height: 360px; /* Mantiene la proporción horizontal al abrirse completamente */
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
         }
 
@@ -274,13 +279,22 @@
             .pocket-right { border-width: 115px 170px 115px 0; }
             .pocket-bottom { border-width: 0 170px 115px 170px; }
             .heart-seal { top: 100px; font-size: 36px; }
-            .letter { width: 310px; height: 190px; left: 15px; padding: 15px; bottom: 10px; gap: 8px;}
-            .letter-content h1 { font-size: 14px; margin-bottom: 4px; }
-            .letter-content p { font-size: 11px; line-height: 1.3; }
-            .question { font-size: 13px; gap: 5px; }
-            .btn { padding: 6px 20px; font-size: 12px; }
-            .options-container { height: 30px; gap: 15px; }
-            .envelope-container.open .letter { transform: translateY(-160px); height: 280px; }
+            
+            .letter { 
+                width: 310px; 
+                height: 215px; 
+                left: 15px; 
+                padding: 12px 15px; 
+                bottom: 10px;
+            }
+            .letter-content h1 { font-size: 12.5px; margin-bottom: 4px; }
+            .letter-content p { font-size: 10px; line-height: 1.35; }
+            .question { font-size: 12px; gap: 6px; }
+            .btn { padding: 5px 20px; font-size: 11px; }
+            .options-container { height: 28px; gap: 15px; }
+            
+            /* Ajuste de salida móvil */
+            .envelope-container.open .letter { transform: translateY(-90px); }
             .success-content h2 { font-size: 24px; }
             .success-content p { font-size: 16px; }
         }
@@ -288,7 +302,6 @@
 </head>
 <body>
 
-    <!-- Fondo de Corazones en Movimiento -->
     <div class="heart-fall" style="left: 7%; animation-duration: 6s;">❤️</div>
     <div class="heart-fall" style="left: 18%; animation-duration: 8s;">💖</div>
     <div class="heart-fall" style="left: 29%; animation-duration: 5s;">💕</div>
@@ -351,7 +364,7 @@
             sobre.classList.toggle('open');
         });
 
-        // Algoritmo de evasión: cambia a posición absoluta solo cuando intentan interactuar
+        // Algoritmo de evasión para el botón "No"
         const moverBotonNo = () => {
             if (btnNo.style.position !== 'fixed') {
                 btnNo.style.position = 'fixed';
@@ -364,7 +377,6 @@
             btnNo.style.top = `${y}px`;
         };
 
-        // Eventos para PC y Móviles
         btnNo.addEventListener('mouseenter', moverBotonNo);
         btnNo.addEventListener('click', moverBotonNo);
         btnNo.addEventListener('touchstart', (e) => {
@@ -372,9 +384,17 @@
             moverBotonNo();
         });
 
+        // Función para enviar respuestas mediante EmailJS
+        function enviarRespuesta(respuesta){
+            emailjs.send("service_xidmaiq", "template_7x1juig", {
+                mensaje: "Tu crush respondió: " + respuesta
+            });
+        }
+
         // Acción definitiva al presionar "Sip"
         btnSi.addEventListener('click', (e) => {
             e.stopPropagation(); 
+            enviarRespuesta("Sip"); // Ejecuta el envío de EmailJS
             pantallaExito.classList.add('show');
         });
     </script>
